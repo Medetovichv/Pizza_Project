@@ -25,7 +25,18 @@ public class WebSecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeRequests(auth -> {
-                    auth.requestMatchers(HttpMethod.GET).permitAll();
+                    try {
+                        auth.requestMatchers(HttpMethod.GET).permitAll()
+                                .anyRequest().hasRole("ADMIN")
+                                .and()
+                                .formLogin().permitAll()
+                                .and().logout()
+                                .permitAll();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    //auth.anyRequest().authenticated();
 
                 }).httpBasic(Customizer.withDefaults())
                 .build();

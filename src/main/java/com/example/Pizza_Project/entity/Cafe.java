@@ -5,7 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 @Entity
@@ -27,9 +30,9 @@ public class Cafe {
     private String email;
 
     private String phone;
-    private LocalDateTime open_at;
+    private String open_at;
 
-    private LocalDateTime close_at;
+    private String close_at;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "cafe")
     private List<Pizza> pizza_menu;
