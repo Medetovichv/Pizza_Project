@@ -23,6 +23,8 @@ public class PizzaController {
         return ResponseEntity.ok("New pizza was added");
     }
 
+
+
     @GetMapping("/pizza/{id}")
     public ResponseEntity<Pizza> getById(@PathVariable Long id){
         return ResponseEntity.ok(pizzaRepository.findById(id).get());
