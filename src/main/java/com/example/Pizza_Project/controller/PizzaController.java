@@ -1,10 +1,13 @@
 package com.example.Pizza_Project.controller;
 
 import com.example.Pizza_Project.entity.Pizza;
+import com.example.Pizza_Project.repository.CafeRepository;
 import com.example.Pizza_Project.repository.PizzaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class PizzaController {
@@ -12,9 +15,12 @@ public class PizzaController {
     @Autowired
     PizzaRepository pizzaRepository;
 
+    @Autowired
+    CafeRepository cafeRepository;
+
     @GetMapping("/pizzas/cafe_id={id}")
-    public ResponseEntity<Iterable<Pizza>> getPizzasByCafeId(@PathVariable Long id){
-        return ResponseEntity.ok(pizzaRepository.findByCafeId(id));
+    public ResponseEntity<List<Pizza>> getPizzasByCafeId(@PathVariable Long id){
+        return ResponseEntity.ok(cafeRepository.findById(id).get().getPizza_menu());
     }
 
     @PostMapping("/pizza")

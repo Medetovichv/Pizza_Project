@@ -54,8 +54,9 @@ public class CafeController {
         return ResponseEntity.ok(cafeRepository.findById(id).get());
     }
 
-    @GetMapping("/cafes?address={city}")
-    public ResponseEntity<Iterable<Cafe>> findingCafeByCity(@PathVariable String city){
+    @GetMapping("/cafes/address={city}")
+    public ResponseEntity<List<Cafe>> findingCafeByCity(@PathVariable String city){
+
         return ResponseEntity.ok(cafeRepository.findByCityContaining(city));
     }
 
