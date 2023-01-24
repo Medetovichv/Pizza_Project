@@ -2,7 +2,10 @@ package com.example.Pizza_Project.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.Hibernate;
 
 import java.math.BigDecimal;
@@ -44,6 +47,14 @@ public class Pizza {
                 ", ingredients='" + ingredients + '\'' +
                 ", price=" + price +
                 '}';
+    }
+
+    public Pizza(String name, Size size, Cafe cafe, String ingredients, BigDecimal price) {
+        this.name = name;
+        this.size = size;
+        this.cafe = cafe;
+        this.ingredients = ingredients;
+        this.price = price;
     }
 
     @Override

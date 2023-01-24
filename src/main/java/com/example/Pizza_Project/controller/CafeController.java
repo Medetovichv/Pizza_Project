@@ -1,14 +1,14 @@
 package com.example.Pizza_Project.controller;
 
+import com.example.Pizza_Project.DTO.CafeDto;
 import com.example.Pizza_Project.entity.Cafe;
 import com.example.Pizza_Project.repository.CafeRepository;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class CafeController {
@@ -17,8 +17,15 @@ public class CafeController {
     CafeRepository cafeRepository;
 
     @GetMapping("/cafes")
-    public ResponseEntity<Iterable<Cafe>> getAllCafes() {
-        return ResponseEntity.ok(cafeRepository.findAll());
+    public ResponseEntity<Iterable<CafeDto>> getAllCafes() {
+        List<Cafe> list= cafeRepository.findAll();
+        List<CafeDto> resList = new ArrayList<>();
+
+        for (Cafe cafe : list) {
+            CafeDto result = CafeDto.fromCafe(cafe);
+            resList.add(result);
+        }
+        return ResponseEntity.ok(resList);
     }
 
     @PostMapping("/cafe")

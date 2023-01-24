@@ -36,7 +36,7 @@ public class PizzaController {
         return ResponseEntity.ok(pizzaRepository.findById(id).get());
     }
 
-    @PutMapping("pizza/{id}")
+    @PutMapping("/pizza/{id}")
     public ResponseEntity<String> changePizza(
             @RequestBody Pizza pizza,
             @PathVariable Long id){
@@ -44,6 +44,28 @@ public class PizzaController {
         pizzaRepository.save(pizza);
         return ResponseEntity.ok("pizza was changed");
     }
+
+    @DeleteMapping("/pizza/{id}")
+    public ResponseEntity<String> deletePizza(
+            @RequestBody Pizza pizza,
+            @PathVariable Long id
+    ){
+        pizzaRepository.deleteById(id);
+        return ResponseEntity.ok("pizza was deleted");
+    }
+
+    @GetMapping("/pizzas")
+    public ResponseEntity<List<Pizza>> getAllPizzas(){
+        return ResponseEntity.ok(pizzaRepository.findAll());
+    }
+
+    @GetMapping("/pizzas/name={pizza_name}")
+    public ResponseEntity<List<Pizza>> findPizzaByNameContaining(
+            @PathVariable(name = "pizza_name") String name)
+    {
+        return ResponseEntity.ok(pizzaRepository.findByNameContaining(name));
+    }
+
 
 
 

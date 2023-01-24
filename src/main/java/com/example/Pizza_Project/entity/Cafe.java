@@ -11,6 +11,7 @@ import java.util.Objects;
 @Table(name = "cafe")
 @Getter
 @Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Cafe {
@@ -33,6 +34,18 @@ public class Cafe {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "cafe")
     private List<Pizza> pizza_menu;
+
+
+    public Cafe(String name, String city, String address, String email, String phone, String open_at, String close_at, List<Pizza> pizza_menu) {
+        this.name = name;
+        this.city = city;
+        this.address = address;
+        this.email = email;
+        this.phone = phone;
+        this.open_at = open_at;
+        this.close_at = close_at;
+        this.pizza_menu = pizza_menu;
+    }
 
     @Override
     public boolean equals(Object o) {
