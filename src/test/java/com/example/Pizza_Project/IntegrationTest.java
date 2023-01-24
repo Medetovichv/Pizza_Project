@@ -26,22 +26,20 @@ public class IntegrationTest {
         HttpHeaders headers = new HttpHeaders();
         headers.add("content-type", "application/json");
 
-        // тело запроса + заголовки + url
         HttpEntity<String> request = new HttpEntity<>(
-                "{\"address\" :\"Steinmühle 5\", \"city\" : \"Wabern\", \"close_at\" : \"21:00\", \"name\":\"Pinoccio3\",\"open_at\": \"12:00\",\"phone\": \"017523566435\",\"email\": \"Pinoccio3@gmail.com\"}",
-
+                "{\"name\":\"Pinoccio3\", \"city\" : \"Wabern\",\"address\" :\"Steinmühle 5\", \"email\": \"Pinoccio3@gmail.com\", \"phone\": \"017523566435\", \"open_at\": \"12:00\",\"close_at\" : \"21:00\"}",
                 headers
         );
 
         String body =
-                restTemplate.postForEntity(
+                restTemplate.withBasicAuth("admin", "password").postForEntity(
                         "http://localhost:" + port + "/cafe",
                         request,
                         String.class
                 ).getBody();
 
 
-        assertEquals(body, "cafe was registered");
+        assertEquals(body, "Cafe was registered");
     }
 
 }
