@@ -1,6 +1,8 @@
 package com.example.Pizza_Project.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -19,17 +21,22 @@ public class Cafe {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Name is mandatory!")
     private String name;
-
+    @NotBlank(message = "City is mandatory!")
     private String city;
 
+    @NotBlank(message = "Address can't be empty!")
     private String address;
 
+    @NotBlank(message = "Email is mandatory!")
+    @Email(message = "Email address is not valid")
     private String email;
-
+    @NotBlank(message = "Phone is mandatory!")
     private String phone;
+    @NotBlank(message = "this field can't be empty!")
     private String open_at;
-
+    @NotBlank(message = "this field can't be empty!")
     private String close_at;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "cafe")

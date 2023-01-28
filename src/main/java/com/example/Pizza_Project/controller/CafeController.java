@@ -3,12 +3,18 @@ package com.example.Pizza_Project.controller;
 import com.example.Pizza_Project.DTO.CafeDto;
 import com.example.Pizza_Project.entity.Cafe;
 import com.example.Pizza_Project.repository.CafeRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class CafeController {
@@ -27,10 +33,23 @@ public class CafeController {
         }
         return ResponseEntity.ok(resList);
     }
-
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationExceptions(
+            MethodArgumentNotValidException ex
+    ) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach(
+                error ->
+                        errors.put(
+                                ((FieldError) error).getField(),
+                                error.getDefaultMessage())
+        );
+        return errors;
+    }
     @PostMapping("/cafe")
     public ResponseEntity<String> addCafe(
-            @RequestBody Cafe cafe
+            @Valid @RequestBody Cafe cafe
     ){
         cafeRepository.save(cafe);
         return ResponseEntity.ok("Cafe was registered");
@@ -38,7 +57,7 @@ public class CafeController {
 
     @PutMapping("/cafe/{id}")
     public ResponseEntity<String> updateCafe(
-            @RequestBody Cafe cafe,
+           @Valid  @RequestBody Cafe cafe,
             @PathVariable Long id
     ){
         cafe.setId(id);
@@ -48,7 +67,7 @@ public class CafeController {
 
     @DeleteMapping("/cafe/{id}")
     public ResponseEntity<String> deleteCafe(
-            @RequestBody Cafe cafe,
+            @Valid @RequestBody Cafe cafe,
             @PathVariable Long id
     ){
         cafeRepository.delete(cafeRepository.findById(id).get());

@@ -3,11 +3,17 @@ package com.example.Pizza_Project.controller;
 import com.example.Pizza_Project.entity.Pizza;
 import com.example.Pizza_Project.repository.CafeRepository;
 import com.example.Pizza_Project.repository.PizzaRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class PizzaController {
@@ -24,9 +30,23 @@ public class PizzaController {
     }
 
     @PostMapping("/pizza")
-    public ResponseEntity<String> addPizza(@RequestBody Pizza pizza){
+    public ResponseEntity<String> addPizza(@Valid @RequestBody Pizza pizza){
         pizzaRepository.save(pizza);
         return ResponseEntity.ok("New pizza was added");
+    }
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationExceptions(
+            MethodArgumentNotValidException ex
+    ) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach(
+                error ->
+                        errors.put(
+                                ((FieldError) error).getField(),
+                                error.getDefaultMessage())
+        );
+        return errors;
     }
 
 
@@ -38,7 +58,7 @@ public class PizzaController {
 
     @PutMapping("/pizza/{id}")
     public ResponseEntity<String> changePizza(
-            @RequestBody Pizza pizza,
+            @RequestBody @Valid Pizza pizza,
             @PathVariable Long id){
         pizza.setId(id);
         pizzaRepository.save(pizza);
@@ -47,7 +67,7 @@ public class PizzaController {
 
     @DeleteMapping("/pizza/{id}")
     public ResponseEntity<String> deletePizza(
-            @RequestBody Pizza pizza,
+            @RequestBody @Valid Pizza pizza,
             @PathVariable Long id
     ){
         pizzaRepository.deleteById(id);

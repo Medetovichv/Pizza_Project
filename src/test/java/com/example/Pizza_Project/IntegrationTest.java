@@ -42,4 +42,25 @@ public class IntegrationTest {
         assertEquals(body, "Cafe was registered");
     }
 
+    @Test
+    public void createPizzaTest() throws Exception {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("content-type", "application/json");
+
+        HttpEntity<String> request = new HttpEntity<>(
+                "{\"name\" : \"Margarita\", \"size\": \"XL\", \"ingredients\": \"Tomaten, Mozarello, Sauce\", \"price\" : 10}",
+                headers
+        );
+
+        String body =
+                restTemplate.withBasicAuth("admin", "password").postForEntity(
+                        "http://localhost:" + port + "/pizza",
+                        request,
+                        String.class
+                ).getBody();
+
+
+        assertEquals(body, "New pizza was added");
+    }
+
 }

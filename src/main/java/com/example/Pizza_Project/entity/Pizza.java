@@ -2,6 +2,7 @@ package com.example.Pizza_Project.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,10 +23,10 @@ public class Pizza {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @NotBlank(message = "Name is mandatory!")
     private String name;
 
-//    @ElementCollection(targetClass = Size.class, fetch = FetchType.EAGER)
+    @Column(name = "pizza_size")
     @Enumerated(EnumType.STRING)
     private Size size;
 
@@ -33,7 +34,7 @@ public class Pizza {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cafe_id")
     private Cafe cafe;
-
+    @NotBlank(message = "Write here ingredients!")
     private String ingredients;
 
     private BigDecimal price;
